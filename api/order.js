@@ -1,54 +1,63 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed"
-    });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { order, total, userId } = req.body;
+    const { order, total, user } = req.body;
 
-    if (!order || !total || !userId) {
+    if (!order || !Array.isArray(order) || !user?.id) {
       return res.status(400).json({
-        error: "Missing order data"
+        error: "Недостаточно данных"
       });
     }
 
-    const token = process.env.BOT_TOKEN;
+    const BOT_TOKEN = process.env.BOT_TOKEN;
 
-    if (!token) {
+    if (!BOT_TOKEN) {
       return res.status(500).json({
-        error: "BOT_TOKEN is not configured"
+        error: "BOT_TOKEN не найден"
       });
     }
 
-    const text =
-      "🛒 НОВЫЙ ЗАКАЗ QRON\n\n" +
-      order.map(item =>
-        `${item.name} × ${item.quantity} — ${item.price * item.quantity} ₸`
-      ).join("\n") +
-      `\n\n💰 Итого: ${total} ₸` +
-      `\n👤 Telegram ID: ${userId}`;
+    let text = "🛒 НОВЫЙ ЗАКАЗ QRON\n\n";
 
-    const response = await fetch(
-      `https://api.telegram.org/bot${token}/sendMessage`,
+    order.forEach((item) => {
+      text += `🍴 ${item.name} × ${item.quantity} — ${
+        item.price * item.quantity
+      } ₸\n`;
+    });
+
+    text += `\n💰 Итого: ${total} ₸`;
+
+    if (user.first_name) {
+      text += `\n\n👤 Клиент: ${user.first_name}`;
+    }
+
+    if (user.username) {
+      text += `\n📱 @${user.username}`;
+    }
+
+    const telegramResponse = await fetch(
+      `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          chat_id: userId,
-          text: text
+          chat_id: user.id,
+          text
         })
       }
     );
 
-    const result = await response.json();
+    const telegramData = await telegramResponse.json();
 
-    if (!result.ok) {
+    if (!telegramData.ok) {
       return res.status(500).json({
-        error: result.description || "Telegram error"
+        error: "Telegram не принял заказ",
+        details: telegramData.description
       });
     }
 
@@ -58,7 +67,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
     return res.status(500).json({
-      error: error.message
+      error: "Ошибка сервера"
     });
   }
 }

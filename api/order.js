@@ -1,10 +1,12 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({
+      error: "Method not allowed"
+    });
   }
 
   try {
-    const { order, total, user } = req.body;
+    const { order, total, user, customer } = req.body;
 
     if (!order || !Array.isArray(order) || !user?.id) {
       return res.status(400).json({
@@ -30,12 +32,19 @@ export default async function handler(req, res) {
 
     text += `\n💰 Итого: ${total} ₸`;
 
+    text += `\n\n👤 Имя: ${customer?.name || "Не указано"}`;
+    text += `\n📞 Телефон: ${customer?.phone || "Не указан"}`;
+
+    if (customer?.comment) {
+      text += `\n💬 Комментарий: ${customer.comment}`;
+    }
+
     if (user.first_name) {
-      text += `\n\n👤 Клиент: ${user.first_name}`;
+      text += `\n\n📱 Telegram: ${user.first_name}`;
     }
 
     if (user.username) {
-      text += `\n📱 @${user.username}`;
+      text += `\n🔗 @${user.username}`;
     }
 
     const telegramResponse = await fetch(

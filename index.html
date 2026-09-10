@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRON</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    .header {
+      margin-bottom: 25px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      color: #777;
+      margin-top: 5px;
+    }
+
+    .category {
+      background: white;
+      padding: 18px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .category:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="logo">QRON</div>
+    <div class="subtitle">Заказывай быстро</div>
+  </div>
+
+  <div class="category">🌯 Шаурма</div>
+  <div class="category">🍔 Бургеры</div>
+  <div class="category">🍟 Фастфуд</div>
+  <div class="category">🥤 Напитки</div>
+  <div class="category">🍱 Комбо</div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+  </script>
+
+</body>
+</html>

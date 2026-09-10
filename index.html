@@ -42,32 +42,134 @@
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
+      transition: transform 0.1s;
     }
 
     .category:active {
       transform: scale(0.98);
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 12px 16px;
+      background: white;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .item {
+      background: white;
+      padding: 18px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+    }
+
+    .item-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .item-price {
+      margin-top: 8px;
+      color: #777;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <div class="logo">QRON</div>
-    <div class="subtitle">Заказывай быстро</div>
+  <!-- Главное меню -->
+  <div id="mainPage">
+
+    <div class="header">
+      <div class="logo">QRON</div>
+      <div class="subtitle">Заказывай быстро</div>
+    </div>
+
+    <div class="category" onclick="openCategory('Шаурма')">
+      🌯 Шаурма
+    </div>
+
+    <div class="category" onclick="openCategory('Бургеры')">
+      🍔 Бургеры
+    </div>
+
+    <div class="category" onclick="openCategory('Фастфуд')">
+      🍟 Фастфуд
+    </div>
+
+    <div class="category" onclick="openCategory('Напитки')">
+      🥤 Напитки
+    </div>
+
+    <div class="category" onclick="openCategory('Комбо')">
+      🍱 Комбо
+    </div>
+
   </div>
 
-  <div class="category">🌯 Шаурма</div>
-  <div class="category">🍔 Бургеры</div>
-  <div class="category">🍟 Фастфуд</div>
-  <div class="category">🥤 Напитки</div>
-  <div class="category">🍱 Комбо</div>
+
+  <!-- Страница категории -->
+  <div id="categoryPage" class="hidden">
+
+    <div class="back" onclick="goBack()">
+      ← Назад
+    </div>
+
+    <div class="header">
+      <div class="logo" id="categoryTitle"></div>
+      <div class="subtitle">Выбери блюдо</div>
+    </div>
+
+    <div id="items"></div>
+
+  </div>
+
 
   <script>
     const tg = window.Telegram.WebApp;
 
     tg.ready();
     tg.expand();
+
+
+    function openCategory(category) {
+
+      document.getElementById("mainPage").classList.add("hidden");
+
+      document.getElementById("categoryPage").classList.remove("hidden");
+
+      document.getElementById("categoryTitle").textContent = category;
+
+      const items = document.getElementById("items");
+
+      items.innerHTML = `
+        <div class="item">
+          <div class="item-name">${category} — классическая</div>
+          <div class="item-price">Цена: скоро добавим</div>
+        </div>
+
+        <div class="item">
+          <div class="item-name">${category} — фирменная</div>
+          <div class="item-price">Цена: скоро добавим</div>
+        </div>
+      `;
+    }
+
+
+    function goBack() {
+
+      document.getElementById("categoryPage").classList.add("hidden");
+
+      document.getElementById("mainPage").classList.remove("hidden");
+
+    }
   </script>
 
 </body>

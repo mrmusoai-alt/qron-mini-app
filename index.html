@@ -34,57 +34,112 @@
       margin-top: 5px;
     }
 
-    .category {
+    .category,
+    .product,
+    .cart {
       background: white;
       padding: 18px;
       border-radius: 18px;
       margin-bottom: 12px;
+    }
+
+    .category {
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.1s;
     }
 
-    .category:active {
+    .category:active,
+    .product:active,
+    button:active {
       transform: scale(0.98);
     }
 
-    .back {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 12px 16px;
-      background: white;
+    .product {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .product-name {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    .price {
+      color: #777;
+      margin-top: 6px;
+    }
+
+    button {
+      border: 0;
+      background: #111;
+      color: white;
+      padding: 11px 16px;
       border-radius: 12px;
       font-weight: 600;
       cursor: pointer;
     }
 
-    .item {
+    .back {
+      display: inline-block;
       background: white;
-      padding: 18px;
-      border-radius: 18px;
-      margin-bottom: 12px;
-    }
-
-    .item-name {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .item-price {
-      margin-top: 8px;
-      color: #777;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     .hidden {
       display: none;
+    }
+
+    .cart-button {
+      position: fixed;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      padding: 17px;
+      background: #111;
+      color: white;
+      border-radius: 16px;
+      text-align: center;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 10px;
+    }
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quantity button {
+      padding: 7px 11px;
+    }
+
+    .total {
+      font-size: 21px;
+      font-weight: 800;
+      margin-top: 20px;
+      margin-bottom: 15px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Главное меню -->
+  <!-- ГЛАВНАЯ -->
   <div id="mainPage">
 
     <div class="header">
@@ -92,43 +147,69 @@
       <div class="subtitle">Заказывай быстро</div>
     </div>
 
-    <div class="category" onclick="openCategory('Шаурма')">
+    <div class="category" onclick="openCategory('shawarma')">
       🌯 Шаурма
     </div>
 
-    <div class="category" onclick="openCategory('Бургеры')">
-      🍔 Бургеры
+    <div class="category" onclick="openCategory('food')">
+      🍴 Основное меню
     </div>
 
-    <div class="category" onclick="openCategory('Фастфуд')">
-      🍟 Фастфуд
+    <div class="category" onclick="openCategory('salads')">
+      🥗 Салаты
     </div>
 
-    <div class="category" onclick="openCategory('Напитки')">
-      🥤 Напитки
-    </div>
-
-    <div class="category" onclick="openCategory('Комбо')">
-      🍱 Комбо
+    <div class="category" onclick="openCategory('extras')">
+      ➕ Добавки
     </div>
 
   </div>
 
 
-  <!-- Страница категории -->
+  <!-- ТОВАРЫ -->
   <div id="categoryPage" class="hidden">
 
-    <div class="back" onclick="goBack()">
-      ← Назад
-    </div>
+    <div class="back" onclick="goBack()">← Назад</div>
 
     <div class="header">
       <div class="logo" id="categoryTitle"></div>
       <div class="subtitle">Выбери блюдо</div>
     </div>
 
-    <div id="items"></div>
+    <div id="products"></div>
 
+  </div>
+
+
+  <!-- КОРЗИНА -->
+  <div id="cartPage" class="hidden">
+
+    <div class="back" onclick="goBack()">← Назад</div>
+
+    <div class="header">
+      <div class="logo">Корзина</div>
+      <div class="subtitle">Проверь свой заказ</div>
+    </div>
+
+    <div class="cart" id="cartItems"></div>
+
+    <div class="total" id="total"></div>
+
+    <button
+      style="width:100%; padding:16px;"
+      onclick="checkout()">
+      Оформить заказ
+    </button>
+
+  </div>
+
+
+  <!-- КНОПКА КОРЗИНЫ -->
+  <div
+    id="cartButton"
+    class="cart-button hidden"
+    onclick="openCart()">
+    🛒 Корзина
   </div>
 
 
@@ -139,36 +220,295 @@
     tg.expand();
 
 
+    const menu = {
+
+      shawarma: {
+        title: "🌯 Шаурма",
+        items: [
+          ["MAX", 320],
+          ["Стандарт", 250],
+          ["Мини", 220],
+          ["Гранатовая", 290],
+          ["С креветкой", 360],
+          ["Мексикано", 260],
+          ["На тарелке", 300],
+          ["В сырном лаваше MAX", 320],
+          ["В сырном лаваше", 260],
+          ["Фирменная", 390]
+        ]
+      },
+
+      food: {
+        title: "🍴 Основное меню",
+        items: [
+          ["Ролл куриный", 240],
+          ["Мясо в лаваше", 260],
+          ["Мясо в булке", 260],
+          ["Хот-дог", 200],
+          ["Хот-дог в лаваше", 180],
+          ["Хот-дог двойной", 220],
+          ["Донар", 280],
+          ["Гирос", 280],
+          ["Фахитос", 280],
+          ["Секпасти", 350],
+          ["Плов", 350],
+          ["Картошка фри", 140],
+          ["Наггетсы", 160]
+        ]
+      },
+
+      salads: {
+        title: "🥗 Салаты",
+        items: [
+          ["Салат весенний", 100],
+          ["Салат летний", 150]
+        ]
+      },
+
+      extras: {
+        title: "➕ Добавки",
+        items: [
+          ["Фри", 30],
+          ["Мясо", 50],
+          ["Грибы", 30],
+          ["Халапеньо", 30],
+          ["Сыр", 30]
+        ]
+      }
+
+    };
+
+
+    let cart = [];
+
+
     function openCategory(category) {
 
-      document.getElementById("mainPage").classList.add("hidden");
+      document.getElementById("mainPage")
+        .classList.add("hidden");
 
-      document.getElementById("categoryPage").classList.remove("hidden");
+      document.getElementById("categoryPage")
+        .classList.remove("hidden");
 
-      document.getElementById("categoryTitle").textContent = category;
+      document.getElementById("cartPage")
+        .classList.add("hidden");
 
-      const items = document.getElementById("items");
+      const data = menu[category];
 
-      items.innerHTML = `
-        <div class="item">
-          <div class="item-name">${category} — классическая</div>
-          <div class="item-price">Цена: скоро добавим</div>
-        </div>
+      document.getElementById("categoryTitle")
+        .textContent = data.title;
 
-        <div class="item">
-          <div class="item-name">${category} — фирменная</div>
-          <div class="item-price">Цена: скоро добавим</div>
-        </div>
-      `;
+      const products = document.getElementById("products");
+
+      products.innerHTML = "";
+
+      data.items.forEach(item => {
+
+        const name = item[0];
+        const price = item[1];
+
+        products.innerHTML += `
+          <div class="product">
+
+            <div>
+              <div class="product-name">
+                ${name}
+              </div>
+
+              <div class="price">
+                ${price} ₸
+              </div>
+            </div>
+
+            <button onclick="addToCart('${name}', ${price})">
+              +
+            </button>
+
+          </div>
+        `;
+      });
+    }
+
+
+    function addToCart(name, price) {
+
+      const existing = cart.find(
+        item => item.name === name
+      );
+
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({
+          name: name,
+          price: price,
+          quantity: 1
+        });
+      }
+
+      updateCartButton();
+
+      tg.HapticFeedback.impactOccurred("light");
+    }
+
+
+    function updateCartButton() {
+
+      const button =
+        document.getElementById("cartButton");
+
+      if (cart.length === 0) {
+        button.classList.add("hidden");
+        return;
+      }
+
+      let count = cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+
+      button.textContent =
+        `🛒 Корзина · ${count}`;
+
+      button.classList.remove("hidden");
+    }
+
+
+    function openCart() {
+
+      document.getElementById("mainPage")
+        .classList.add("hidden");
+
+      document.getElementById("categoryPage")
+        .classList.add("hidden");
+
+      document.getElementById("cartPage")
+        .classList.remove("hidden");
+
+      renderCart();
+    }
+
+
+    function renderCart() {
+
+      const container =
+        document.getElementById("cartItems");
+
+      if (cart.length === 0) {
+
+        container.innerHTML =
+          "Корзина пока пустая.";
+
+        document.getElementById("total")
+          .textContent = "";
+
+        return;
+      }
+
+      container.innerHTML = "";
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+
+        const sum =
+          item.price * item.quantity;
+
+        total += sum;
+
+        container.innerHTML += `
+
+          <div class="cart-row">
+
+            <div>
+              <strong>${item.name}</strong><br>
+              ${sum} ₸
+            </div>
+
+            <div class="quantity">
+
+              <button
+                onclick="changeQuantity(${index}, -1)">
+                −
+              </button>
+
+              <span>${item.quantity}</span>
+
+              <button
+                onclick="changeQuantity(${index}, 1)">
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+      });
+
+      document.getElementById("total")
+        .textContent = `Итого: ${total} ₸`;
+    }
+
+
+    function changeQuantity(index, change) {
+
+      cart[index].quantity += change;
+
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+
+      updateCartButton();
+      renderCart();
     }
 
 
     function goBack() {
 
-      document.getElementById("categoryPage").classList.add("hidden");
+      document.getElementById("categoryPage")
+        .classList.add("hidden");
 
-      document.getElementById("mainPage").classList.remove("hidden");
+      document.getElementById("cartPage")
+        .classList.add("hidden");
 
+      document.getElementById("mainPage")
+        .classList.remove("hidden");
+    }
+
+
+    function checkout() {
+
+      if (cart.length === 0) {
+        alert("Корзина пустая");
+        return;
+      }
+
+      const order = cart.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+      }));
+
+      const total = cart.reduce(
+        (sum, item) =>
+          sum + item.price * item.quantity,
+        0
+      );
+
+      /*
+        Пока только показываем заказ.
+        На следующем шаге подключим
+        безопасную отправку в Telegram.
+      */
+
+      alert(
+        "Заказ готов!\n\n" +
+        order.map(item =>
+          `${item.name} × ${item.quantity}`
+        ).join("\n") +
+        `\n\nИтого: ${total} ₸`
+      );
     }
   </script>
 

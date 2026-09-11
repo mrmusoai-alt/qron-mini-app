@@ -199,170 +199,6 @@
       justify-content: center;
     }
 
-
-    /* =========================
-       ORDER HISTORY
-    ========================= */
-
-    function openHistory() {
-      hideAllPages();
-
-      document
-        .getElementById("historyPage")
-        .classList.remove("hidden");
-
-      loadHistory();
-
-      window.scrollTo(0, 0);
-    }
-
-
-    async function loadHistory() {
-      const container =
-        document.getElementById("historyItems");
-
-      const user =
-        tg.initDataUnsafe &&
-        tg.initDataUnsafe.user;
-
-      if (!user || !user.id) {
-        container.innerHTML = `
-          <div class="history-empty">
-            <div class="history-empty-icon">📱</div>
-            <div class="empty-cart-title">
-              Откройте QRON через Telegram
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      container.innerHTML = `
-        <div class="history-loading">
-          ⏳ Загружаем заказы...
-        </div>
-      `;
-
-      try {
-        const response = await fetch(
-          `/api/history?telegram_id=${encodeURIComponent(user.id)}`
-        );
-
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-          throw new Error(
-            result.error || "Ошибка загрузки"
-          );
-        }
-
-        const orders = result.orders || [];
-
-        if (orders.length === 0) {
-          container.innerHTML = `
-            <div class="history-empty">
-              <div class="history-empty-icon">🛒</div>
-              <div class="empty-cart-title">
-                Заказов пока нет
-              </div>
-              <div>
-                Здесь появятся ваши прошлые заказы
-              </div>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = "";
-
-        orders.forEach(order => {
-          let items = [];
-
-          try {
-            items = Array.isArray(order.items)
-              ? order.items
-              : JSON.parse(order.items || "[]");
-          } catch (e) {
-            items = [];
-          }
-
-          const date = order.created_at
-            ? new Date(order.created_at).toLocaleString(
-                "ru-RU",
-                {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit"
-                }
-              )
-            : "";
-
-          const card =
-            document.createElement("div");
-
-          card.className = "history-card";
-
-          card.innerHTML = `
-            <div class="history-top">
-              <div class="history-number">
-                Заказ #${order.id}
-              </div>
-              <div class="history-status">
-                ${order.status || "Принят"}
-              </div>
-            </div>
-
-            <div class="history-date">
-              ${date}
-            </div>
-
-            <div class="history-items">
-              ${
-                items.length
-                  ? items.map(item => `
-                      <div class="history-item">
-                        <span>
-                          ${item.name} × ${item.quantity}
-                        </span>
-                        <strong>
-                          ${(Number(item.price) || 0) *
-                            (Number(item.quantity) || 0)} ₸
-                        </strong>
-                      </div>
-                    `).join("")
-                  : "<div>Состав заказа недоступен</div>"
-              }
-            </div>
-
-            <div class="history-total">
-              <span>Итого</span>
-              <span>${Number(order.total) || 0} ₸</span>
-            </div>
-          `;
-
-          container.appendChild(card);
-        });
-
-      } catch (error) {
-        console.error(error);
-
-        container.innerHTML = `
-          <div class="history-empty">
-            <div class="history-empty-icon">⚠️</div>
-            <div class="empty-cart-title">
-              Не удалось загрузить историю
-            </div>
-            <div>
-              Попробуйте открыть раздел ещё раз
-            </div>
-          </div>
-        `;
-      }
-    }
-
-
     /* =========================
        BACK
     ========================= */
@@ -740,7 +576,6 @@
       font-weight: 900;
       margin-bottom: 5px;
     }
-
 
     /* =========================
        ORDER HISTORY
@@ -1206,6 +1041,165 @@
     const telegramUser =
       tg.initDataUnsafe &&
       tg.initDataUnsafe.user;
+
+
+    function openHistory() {
+      hideAllPages();
+
+      document
+        .getElementById("historyPage")
+        .classList.remove("hidden");
+
+      loadHistory();
+
+      window.scrollTo(0, 0);
+    }
+
+
+    async function loadHistory() {
+      const container =
+        document.getElementById("historyItems");
+
+      const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
+
+      if (!user || !user.id) {
+        container.innerHTML = `
+          <div class="history-empty">
+            <div class="history-empty-icon">📱</div>
+            <div class="empty-cart-title">
+              Откройте QRON через Telegram
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="history-loading">
+          ⏳ Загружаем заказы...
+        </div>
+      `;
+
+      try {
+        const response = await fetch(
+          `/api/history?telegram_id=${encodeURIComponent(user.id)}`
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(
+            result.error || "Ошибка загрузки"
+          );
+        }
+
+        const orders = result.orders || [];
+
+        if (orders.length === 0) {
+          container.innerHTML = `
+            <div class="history-empty">
+              <div class="history-empty-icon">🛒</div>
+              <div class="empty-cart-title">
+                Заказов пока нет
+              </div>
+              <div>
+                Здесь появятся ваши прошлые заказы
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = "";
+
+        orders.forEach(order => {
+          let items = [];
+
+          try {
+            items = Array.isArray(order.items)
+              ? order.items
+              : JSON.parse(order.items || "[]");
+          } catch (e) {
+            items = [];
+          }
+
+          const date = order.created_at
+            ? new Date(order.created_at).toLocaleString(
+                "ru-RU",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }
+              )
+            : "";
+
+          const card =
+            document.createElement("div");
+
+          card.className = "history-card";
+
+          card.innerHTML = `
+            <div class="history-top">
+              <div class="history-number">
+                Заказ #${order.id}
+              </div>
+              <div class="history-status">
+                ${order.status || "Принят"}
+              </div>
+            </div>
+
+            <div class="history-date">
+              ${date}
+            </div>
+
+            <div class="history-items">
+              ${
+                items.length
+                  ? items.map(item => `
+                      <div class="history-item">
+                        <span>
+                          ${item.name} × ${item.quantity}
+                        </span>
+                        <strong>
+                          ${(Number(item.price) || 0) *
+                            (Number(item.quantity) || 0)} ₸
+                        </strong>
+                      </div>
+                    `).join("")
+                  : "<div>Состав заказа недоступен</div>"
+              }
+            </div>
+
+            <div class="history-total">
+              <span>Итого</span>
+              <span>${Number(order.total) || 0} ₸</span>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error(error);
+
+        container.innerHTML = `
+          <div class="history-empty">
+            <div class="history-empty-icon">⚠️</div>
+            <div class="empty-cart-title">
+              Не удалось загрузить историю
+            </div>
+            <div>
+              Попробуйте открыть раздел ещё раз
+            </div>
+          </div>
+        `;
+      }
+    }
 
 
     if (telegramUser) {
@@ -2149,5 +2143,1343 @@
   </script>
 
 </body>
+      </html>  <!-- =========================
+       CATEGORY
+  ========================= -->
+
+  <div id="categoryPage" class="page hidden">
+
+    <div class="back-button" onclick="goBack()">
+      ← Назад
+    </div>
+
+    <div class="page-title" id="categoryTitle"></div>
+
+    <div class="page-subtitle">
+      Выбери блюдо
+    </div>
+
+    <div class="products" id="products"></div>
+
+  </div>
+
+
+  <!-- =========================
+       ORDER HISTORY
+  ========================= -->
+
+  <div id="historyPage" class="page hidden">
+
+    <div class="back-button" onclick="goBack()">
+      ← Меню
+    </div>
+
+    <div class="page-title">
+      Мои заказы
+    </div>
+
+    <div class="page-subtitle">
+      История ваших заказов
+    </div>
+
+    <div id="historyItems">
+      <div class="history-loading">
+        ⏳ Загружаем заказы...
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       CART
+  ========================= -->
+
+  <div id="cartPage" class="page hidden">
+
+    <div class="back-button" onclick="goBack()">
+      ← Меню
+    </div>
+
+    <div class="page-title">
+      Корзина
+    </div>
+
+    <div class="page-subtitle">
+      Проверь заказ перед оформлением
+    </div>
+
+    <div class="cart-card" id="cartItems"></div>
+
+    <button
+      class="main-button"
+      onclick="openCheckout()">
+      Оформить заказ
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       CHECKOUT
+  ========================= -->
+
+  <div id="checkoutPage" class="page hidden">
+
+    <div class="back-button" onclick="openCart()">
+      ← Корзина
+    </div>
+
+    <div class="page-title">
+      Оформление
+    </div>
+
+    <div class="page-subtitle">
+      Осталось заполнить данные
+    </div>
+
+    <div class="checkout-card">
+
+      <div class="checkout-card-title">
+        🛒 Ваш заказ
+      </div>
+
+      <div id="checkoutItems"></div>
+
+      <div class="checkout-total">
+        <span>Итого</span>
+        <span id="checkoutTotal"></span>
+      </div>
+
+    </div>
+
+
+    <div class="checkout-card">
+
+      <div class="checkout-card-title">
+        👤 Контактные данные
+      </div>
+
+      <div class="field">
+        <label for="name">
+          Имя
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Ваше имя"
+          autocomplete="name">
+      </div>
+
+
+      <div class="field">
+        <label for="phone">
+          Телефон
+        </label>
+
+        <input
+          id="phone"
+          type="tel"
+          placeholder="+7 700 000 00 00"
+          autocomplete="tel">
+      </div>
+
+
+      <div class="field">
+        <label for="comment">
+          Комментарий
+        </label>
+
+        <textarea
+          id="comment"
+          placeholder="Например: без лука, соус отдельно..."></textarea>
+      </div>
+
+    </div>
+
+
+    <button
+      id="sendOrderButton"
+      class="main-button"
+      onclick="sendOrder()">
+      🚀 Отправить заказ
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       SUCCESS
+  ========================= -->
+
+  <div id="successPage" class="page hidden">
+
+    <div class="success-card">
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <div class="success-title">
+        Заказ принят!
+      </div>
+
+      <div class="success-text">
+        Спасибо за заказ.<br>
+        Мы получили его и скоро свяжемся с вами.
+      </div>
+
+      <button
+        class="main-button"
+        onclick="restart()">
+        Вернуться в меню
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       FLOATING CART
+  ========================= -->
+
+  <div
+    id="cartButton"
+    class="floating-cart hidden"
+    onclick="openCart()">
+
+    <div class="floating-cart-left">
+
+      <div class="cart-icon">
+        🛒
+      </div>
+
+      <div class="floating-cart-text">
+        Корзина
+      </div>
+
+    </div>
+
+    <div
+      class="floating-cart-total"
+      id="floatingCartTotal">
+      0 ₸
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+
+    /* =========================
+       USER
+    ========================= */
+
+    const telegramUser =
+      tg.initDataUnsafe &&
+      tg.initDataUnsafe.user;
+
+
+    function openHistory() {
+      hideAllPages();
+
+      document
+        .getElementById("historyPage")
+        .classList.remove("hidden");
+
+      loadHistory();
+
+      window.scrollTo(0, 0);
+    }
+
+
+    async function loadHistory() {
+      const container =
+        document.getElementById("historyItems");
+
+      const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
+
+      if (!user || !user.id) {
+        container.innerHTML = `
+          <div class="history-empty">
+            <div class="history-empty-icon">📱</div>
+            <div class="empty-cart-title">
+              Откройте QRON через Telegram
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="history-loading">
+          ⏳ Загружаем заказы...
+        </div>
+      `;
+
+      try {
+        const response = await fetch(
+          `/api/history?telegram_id=${encodeURIComponent(user.id)}`
+        );
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(
+            result.error || "Ошибка загрузки"
+          );
+        }
+
+        const orders = result.orders || [];
+
+        if (orders.length === 0) {
+          container.innerHTML = `
+            <div class="history-empty">
+              <div class="history-empty-icon">🛒</div>
+              <div class="empty-cart-title">
+                Заказов пока нет
+              </div>
+              <div>
+                Здесь появятся ваши прошлые заказы
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = "";
+
+        orders.forEach(order => {
+          let items = [];
+
+          try {
+            items = Array.isArray(order.items)
+              ? order.items
+              : JSON.parse(order.items || "[]");
+          } catch (e) {
+            items = [];
+          }
+
+          const date = order.created_at
+            ? new Date(order.created_at).toLocaleString(
+                "ru-RU",
+                {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }
+              )
+            : "";
+
+          const card =
+            document.createElement("div");
+
+          card.className = "history-card";
+
+          card.innerHTML = `
+            <div class="history-top">
+              <div class="history-number">
+                Заказ #${order.id}
+              </div>
+              <div class="history-status">
+                ${order.status || "Принят"}
+              </div>
+            </div>
+
+            <div class="history-date">
+              ${date}
+            </div>
+
+            <div class="history-items">
+              ${
+                items.length
+                  ? items.map(item => `
+                      <div class="history-item">
+                        <span>
+                          ${item.name} × ${item.quantity}
+                        </span>
+                        <strong>
+                          ${(Number(item.price) || 0) *
+                            (Number(item.quantity) || 0)} ₸
+                        </strong>
+                      </div>
+                    `).join("")
+                  : "<div>Состав заказа недоступен</div>"
+              }
+            </div>
+
+            <div class="history-total">
+              <span>Итого</span>
+              <span>${Number(order.total) || 0} ₸</span>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error(error);
+
+        container.innerHTML = `
+          <div class="history-empty">
+            <div class="history-empty-icon">⚠️</div>
+            <div class="empty-cart-title">
+              Не удалось загрузить историю
+            </div>
+            <div>
+              Попробуйте открыть раздел ещё раз
+            </div>
+          </div>
+        `;
+      }
+    }
+
+
+    if (telegramUser) {
+
+      const firstName =
+        telegramUser.first_name || "Q";
+
+      document.getElementById("userAvatar")
+        .textContent =
+        firstName
+          .charAt(0)
+          .toUpperCase();
+
+    }
+
+
+    /* =========================
+       IMAGES
+    ========================= */
+
+    const images = {
+
+      shawarma:
+        "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=900&q=80",
+
+      food:
+        "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80",
+
+      hotdog:
+        "https://images.unsplash.com/photo-1612392062631-94dd858cba88?auto=format&fit=crop&w=900&q=80",
+
+      fries:
+        "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=80",
+
+      salad:
+        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+
+      plate:
+        "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80"
+
+    };
+
+
+    /* =========================
+       MENU
+    ========================= */
+
+    const menu = {
+
+      shawarma: {
+        title: "🌯 Шаурма",
+        image: images.shawarma,
+
+        items: [
+          ["MAX", 320],
+          ["Стандарт", 250],
+          ["Мини", 220],
+          ["Гранатовая", 290],
+          ["С креветкой", 360],
+          ["Мексикано", 260],
+          ["На тарелке", 300],
+          ["В сырном лаваше MAX", 320],
+          ["В сырном лаваше", 260],
+          ["Фирменная", 390]
+        ]
+      },
+
+      food: {
+        title: "🍴 Основное меню",
+        image: images.food,
+
+        items: [
+          ["Ролл куриный", 240],
+          ["Мясо в лаваше", 260],
+          ["Мясо в булке", 260],
+          ["Хот-дог", 200],
+          ["Хот-дог в лаваше", 180],
+          ["Хот-дог двойной", 220],
+          ["Донар", 280],
+          ["Гирос", 280],
+          ["Фахитос", 280],
+          ["Секпасти", 350],
+          ["Плов", 350],
+          ["Картошка фри", 140],
+          ["Наггетсы", 160]
+        ]
+      },
+
+      salads: {
+        title: "🥗 Салаты",
+        image: images.salad,
+
+        items: [
+          ["Салат весенний", 100],
+          ["Салат летний", 150]
+        ]
+      },
+
+      extras: {
+        title: "➕ Добавки",
+        image: images.fries,
+
+        items: [
+          ["Фри", 30],
+          ["Мясо", 50],
+          ["Грибы", 30],
+          ["Халапеньо", 30],
+          ["Сыр", 30]
+        ]
+      }
+
+    };    /* =========================
+       CART
+    ========================= */
+
+    let cart = [];
+
+
+    function hideAllPages() {
+
+      document
+        .querySelectorAll(".page")
+        .forEach(page => {
+          page.classList.add("hidden");
+        });
+
+    }
+
+
+    /* =========================
+       CATEGORY
+    ========================= */
+
+    function openCategory(category) {
+
+      hideAllPages();
+
+      document
+        .getElementById("categoryPage")
+        .classList.remove("hidden");
+
+      const data = menu[category];
+
+      document
+        .getElementById("categoryTitle")
+        .textContent = data.title;
+
+      const products =
+        document.getElementById("products");
+
+      products.innerHTML = "";
+
+
+      data.items.forEach((item, index) => {
+
+        const name = item[0];
+        const price = item[1];
+
+        let image = data.image;
+
+        if (
+          name.includes("Хот-дог")
+        ) {
+          image = images.hotdog;
+        }
+
+        if (
+          name.includes("Фри") ||
+          name.includes("Наггет")
+        ) {
+          image = images.fries;
+        }
+
+        if (
+          name.includes("На тарелке") ||
+          name.includes("Плов")
+        ) {
+          image = images.plate;
+        }
+
+
+        const product =
+          document.createElement("div");
+
+        product.className = "product";
+
+
+        product.innerHTML = `
+
+          <img
+            class="product-image"
+            src="${image}"
+            alt="${name}"
+            loading="lazy">
+
+          <div class="product-content">
+
+            <div class="product-top">
+
+              <div>
+
+                <div class="product-name">
+                  ${name}
+                </div>
+
+                <div class="product-price">
+                  ${price} ₸
+                </div>
+
+              </div>
+
+              <button
+                class="add-button"
+                type="button">
+                +
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+
+        product
+          .querySelector(".add-button")
+          .addEventListener(
+            "click",
+            () => addToCart(name, price)
+          );
+
+
+        products.appendChild(product);
+
+      });
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    /* =========================
+       ADD TO CART
+    ========================= */
+
+    function addToCart(name, price) {
+
+      const existing =
+        cart.find(
+          item => item.name === name
+        );
+
+
+      if (existing) {
+
+        existing.quantity++;
+
+      } else {
+
+        cart.push({
+          name,
+          price,
+          quantity: 1
+        });
+
+      }
+
+
+      updateCartButton();
+
+
+      if (
+        tg.HapticFeedback &&
+        tg.HapticFeedback.impactOccurred
+      ) {
+
+        tg.HapticFeedback
+          .impactOccurred("light");
+
+      }
+
+    }
+
+
+    /* =========================
+       CART BUTTON
+    ========================= */
+
+    function updateCartButton() {
+
+      const button =
+        document.getElementById(
+          "cartButton"
+        );
+
+      const totalQuantity =
+        cart.reduce(
+          (sum, item) =>
+            sum + item.quantity,
+          0
+        );
+
+
+      const total =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            item.price *
+            item.quantity,
+          0
+        );
+
+
+      if (cart.length === 0) {
+
+        button.classList.add("hidden");
+
+        return;
+
+      }
+
+
+      button.classList.remove("hidden");
+
+
+      document
+        .querySelector(".floating-cart-text")
+        .textContent =
+        `Корзина · ${totalQuantity}`;
+
+
+      document
+        .getElementById("floatingCartTotal")
+        .textContent =
+        `${total} ₸`;
+
+    }
+
+
+    /* =========================
+       OPEN CART
+    ========================= */
+
+    function openCart() {
+
+      hideAllPages();
+
+      document
+        .getElementById("cartPage")
+        .classList.remove("hidden");
+
+      renderCart();
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    /* =========================
+       RENDER CART
+    ========================= */
+
+    function renderCart() {
+
+      const container =
+        document.getElementById(
+          "cartItems"
+        );
+
+
+      if (cart.length === 0) {
+
+        container.innerHTML = `
+
+          <div class="empty-cart">
+
+            <div class="empty-cart-icon">
+              🛒
+            </div>
+
+            <div class="empty-cart-title">
+              Корзина пустая
+            </div>
+
+            <div>
+              Добавь что-нибудь вкусное
+            </div>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      container.innerHTML = "";
+
+
+      cart.forEach(
+        (item, index) => {
+
+          const sum =
+            item.price *
+            item.quantity;
+
+
+          const row =
+            document.createElement("div");
+
+          row.className =
+            "cart-row";
+
+
+          row.innerHTML = `
+
+            <div>
+
+              <div class="cart-name">
+                ${item.name}
+              </div>
+
+              <div class="cart-price">
+                ${sum} ₸
+              </div>
+
+            </div>
+
+
+            <div class="quantity">
+
+              <button
+                type="button">
+                −
+              </button>
+
+              <span>
+                ${item.quantity}
+              </span>
+
+              <button
+                type="button">
+                +
+              </button>
+
+            </div>
+
+          `;
+
+
+          const buttons =
+            row.querySelectorAll(
+              "button"
+            );
+
+
+          buttons[0]
+            .addEventListener(
+              "click",
+              () =>
+                changeQuantity(
+                  index,
+                  -1
+                )
+            );
+
+
+          buttons[1]
+            .addEventListener(
+              "click",
+              () =>
+                changeQuantity(
+                  index,
+                  1
+                )
+            );
+
+
+          container.appendChild(row);
+
+        }
+      );
+
+
+      const total =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            item.price *
+            item.quantity,
+          0
+        );
+
+
+      const totalElement =
+        document.createElement("div");
+
+
+      totalElement.className =
+        "cart-total";
+
+
+      totalElement.innerHTML = `
+        <span>Итого</span>
+        <span>${total} ₸</span>
+      `;
+
+
+      container.appendChild(
+        totalElement
+      );
+
+    }    /* =========================
+       QUANTITY
+    ========================= */
+
+    function changeQuantity(
+      index,
+      change
+    ) {
+
+      cart[index].quantity += change;
+
+
+      if (
+        cart[index].quantity <= 0
+      ) {
+
+        cart.splice(index, 1);
+
+      }
+
+
+      updateCartButton();
+
+      renderCart();
+
+    }
+
+
+    /* =========================
+       CHECKOUT
+    ========================= */
+
+    function openCheckout() {
+
+      if (cart.length === 0) {
+
+        alert(
+          "Корзина пустая"
+        );
+
+        return;
+
+      }
+
+
+      hideAllPages();
+
+
+      document
+        .getElementById(
+          "checkoutPage"
+        )
+        .classList.remove("hidden");
+
+
+      renderCheckout();
+
+      window.scrollTo(0, 0);
+
+    }
+
+
+    function renderCheckout() {
+
+      const container =
+        document.getElementById(
+          "checkoutItems"
+        );
+
+
+      container.innerHTML = "";
+
+
+      let total = 0;
+
+
+      cart.forEach(item => {
+
+        const sum =
+          item.price *
+          item.quantity;
+
+
+        total += sum;
+
+
+        container.innerHTML += `
+
+          <div class="checkout-item">
+
+            <span>
+              ${item.name} × ${item.quantity}
+            </span>
+
+            <strong>
+              ${sum} ₸
+            </strong>
+
+          </div>
+
+        `;
+
+      });
+
+
+      document
+        .getElementById(
+          "checkoutTotal"
+        )
+        .textContent =
+        `${total} ₸`;
+
+    }
+
+
+    /* =========================
+       SEND ORDER
+    ========================= */
+
+    async function sendOrder() {
+
+      if (cart.length === 0) {
+
+        alert(
+          "Корзина пустая"
+        );
+
+        return;
+
+      }
+
+
+      const name =
+        document
+          .getElementById("name")
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById("phone")
+          .value
+          .trim();
+
+
+      const comment =
+        document
+          .getElementById("comment")
+          .value
+          .trim();
+
+
+      if (!name) {
+
+        alert(
+          "Введите имя"
+        );
+
+        return;
+
+      }
+
+
+      if (!phone) {
+
+        alert(
+          "Введите номер телефона"
+        );
+
+        return;
+
+      }
+
+
+      const user =
+        tg.initDataUnsafe &&
+        tg.initDataUnsafe.user;
+
+
+      if (!user || !user.id) {
+
+        alert(
+          "Откройте QRON через Telegram-бота"
+        );
+
+        return;
+
+      }
+
+
+      const total =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            item.price *
+            item.quantity,
+          0
+        );
+
+
+      const order =
+        cart.map(item => ({
+
+          name:
+            item.name,
+
+          price:
+            item.price,
+
+          quantity:
+            item.quantity
+
+        }));
+
+
+      const button =
+        document.getElementById(
+          "sendOrderButton"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "⏳ Отправляем...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/order",
+            {
+
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  order,
+
+                  total,
+
+                  user: {
+
+                    id:
+                      user.id,
+
+                    first_name:
+                      user.first_name ||
+                      "",
+
+                    username:
+                      user.username ||
+                      ""
+
+                  },
+
+                  customer: {
+
+                    name,
+
+                    phone,
+
+                    comment
+
+                  }
+
+                })
+
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !result.success
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Ошибка отправки"
+          );
+
+        }
+
+
+        cart = [];
+
+
+        updateCartButton();
+
+
+        hideAllPages();
+
+
+        document
+          .getElementById(
+            "successPage"
+          )
+          .classList.remove(
+            "hidden"
+          );
+
+
+        if (
+          tg.HapticFeedback &&
+          tg.HapticFeedback
+            .notificationOccurred
+        ) {
+
+          tg.HapticFeedback
+            .notificationOccurred(
+              "success"
+            );
+
+        }
+
+
+        window.scrollTo(
+          0,
+          0
+        );
+
+
+      } catch (error) {
+
+        alert(
+          "❌ Не удалось отправить заказ.\n\nПопробуйте ещё раз."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+          "🚀 Отправить заказ";
+
+      }
+
+    }
+
+
+    /* =========================
+       BACK
+    ========================= */
+
+    function goBack() {
+
+      hideAllPages();
+
+
+      document
+        .getElementById(
+          "mainPage"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+
+      window.scrollTo(
+        0,
+        0
+      );
+
+    }
+
+
+    /* =========================
+       RESTART
+    ========================= */
+
+    function restart() {
+
+      cart = [];
+
+
+      updateCartButton();
+
+
+      document
+        .getElementById("name")
+        .value = "";
+
+
+      document
+        .getElementById("phone")
+        .value = "";
+
+
+      document
+        .getElementById("comment")
+        .value = "";
+
+
+      const button =
+        document.getElementById(
+          "sendOrderButton"
+        );
+
+
+      button.disabled = false;
+
+      button.textContent =
+        "🚀 Отправить заказ";
+
+
+      goBack();
+
+    }
+
+  </script>
+
+</body>
 </html>
-```

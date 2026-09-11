@@ -15,10 +15,17 @@ export default async function handler(req, res) {
     }
 
     const BOT_TOKEN = process.env.BOT_TOKEN;
+    const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 
     if (!BOT_TOKEN) {
       return res.status(500).json({
         error: "BOT_TOKEN не найден"
+      });
+    }
+
+    if (!ADMIN_CHAT_ID) {
+      return res.status(500).json({
+        error: "ADMIN_CHAT_ID не найден"
       });
     }
 
@@ -33,6 +40,7 @@ export default async function handler(req, res) {
     text += `\n💰 Итого: ${total} ₸`;
 
     text += `\n\n👤 Имя: ${customer?.name || "Не указано"}`;
+
     text += `\n📞 Телефон: ${customer?.phone || "Не указан"}`;
 
     if (customer?.comment) {
@@ -55,8 +63,8 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          chat_id: user.id,
-          text
+          chat_id: ADMIN_CHAT_ID,
+          text: text
         })
       }
     );
@@ -75,6 +83,8 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
+    console.error(error);
+
     return res.status(500).json({
       error: "Ошибка сервера"
     });

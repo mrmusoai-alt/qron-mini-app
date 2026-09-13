@@ -977,6 +977,159 @@
       .detail-body { padding:17px; }
     }
 
+
+
+    /* =========================
+       SHAWARMA MASTER — FINAL UI
+    ========================= */
+    body {
+      background:#050505;
+      color:#fff;
+      padding-bottom:88px;
+    }
+
+    .page { max-width:720px; padding:16px 16px 110px; }
+
+    .top-header {
+      margin-bottom:18px;
+      align-items:center;
+    }
+    .brand {
+      color:#fff;
+      font-size:28px;
+      letter-spacing:-1.2px;
+      line-height:1;
+    }
+    .brand span { color:#ffd400; }
+    .brand-dot { display:none; }
+    .top-header > div:first-child > div:last-child { color:#777 !important; }
+    .telegram-user {
+      width:40px;height:40px;border:1px solid #333;background:#111;color:#ffd400;
+    }
+
+    .hero {
+      background:linear-gradient(135deg,#111,#181818);
+      border:1px solid #2a2a2a;
+      border-radius:20px;
+      padding:0;
+      height:178px;
+      display:flex;
+      align-items:flex-end;
+      overflow:hidden;
+      margin-bottom:18px;
+      background-image:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.08)),url('https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=1200&q=85');
+      background-size:cover;
+      background-position:center;
+    }
+    .hero::after { display:none; }
+    .hero > div { position:relative; z-index:1; padding-left:18px; padding-bottom:18px; }
+    .hero-small { display:none; }
+    .hero-title { font-size:25px; max-width:270px; color:#fff; }
+    .hero-text { display:none; }
+
+    .home-search-wrap { margin-bottom:12px; }
+    .home-search {
+      height:48px; border-radius:15px; background:#151515; border:1px solid #303030;
+      color:#fff; padding-left:44px;
+    }
+    .home-search-icon { color:#aaa; }
+
+    .home-categories { gap:8px; margin-bottom:20px; padding-bottom:2px; }
+    .home-chip {
+      min-width:66px; height:62px; padding:7px 10px; border-radius:15px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:3px; background:#101010; border:1px solid #282828; color:#ddd;
+      font-size:11px; font-weight:800;
+    }
+    .home-chip::first-line { font-size:18px; }
+    .home-chip.active { background:#ffd400; color:#111; border-color:#ffd400; }
+
+    .home-section-head { margin-bottom:12px; }
+    .home-section-title { font-size:21px; }
+    .home-section-link { font-size:12px; }
+
+    .home-products { gap:10px; }
+    .home-product {
+      border-radius:17px; background:#111; border:1px solid #2b2b2b;
+      box-shadow:none; overflow:hidden;
+    }
+    .home-product-image-wrap { height:145px; background:#171717; }
+    .home-product-body { padding:11px 11px 12px; }
+    .home-product-name { font-size:14px; min-height:34px; }
+    .home-product-price { color:#fff; font-size:16px; }
+    .home-add-button { width:32px;height:32px;min-width:32px;border-radius:10px;font-size:22px;background:#ffd400;color:#111; }
+
+    .home-history-button { display:none; }
+
+    /* category page */
+    .back-button {
+      background:transparent; border:0; padding:5px 0; color:#fff; margin-bottom:13px; font-size:15px;
+    }
+    .page-title { font-size:24px; }
+    .page-subtitle { color:#777; margin-bottom:16px; }
+    .products { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .product { background:#111; border:1px solid #292929; border-radius:17px; }
+    .product-image { height:140px; }
+    .product-content { padding:11px; }
+    .product-name { font-size:14px; }
+    .product-price { color:#ffd400; font-size:15px; }
+    .add-button { width:32px;height:32px;min-width:32px;border-radius:10px;font-size:22px;background:#ffd400;color:#111; }
+
+    /* compact product detail like reference */
+    .product-detail-card { border-radius:22px; background:#0c0c0c; border-color:#292929; }
+    .product-gallery { height:280px; }
+    .detail-body { padding:18px; }
+    .detail-name { font-size:25px; }
+    .detail-price { color:#ffd400; font-size:23px; }
+    .detail-description { color:#aaa; font-size:14px; }
+    .detail-heading { margin-top:17px; }
+    .detail-ingredients { gap:6px 15px; }
+    .detail-ingredients li { font-size:14px; }
+    .detail-actions { margin-top:20px; }
+    .detail-add { height:48px; font-size:14px; background:#ffd400; }
+    .detail-quantity { height:48px; padding:5px; }
+    .detail-quantity button { height:38px;width:38px; }
+
+    /* cart */
+    .cart-card,.checkout-card,.success-card,.history-card,.history-empty { background:#101010; border-color:#292929; }
+    .cart-total { color:#fff; }
+    .main-button { background:#ffd400;color:#111; }
+    .field input,.field textarea { background:#151515;border-color:#303030; }
+
+    /* history */
+    .history-status { background:#103b24;color:#4be98a; }
+
+    /* bottom navigation */
+    .bottom-nav {
+      position:fixed; left:0; right:0; bottom:0; height:72px; z-index:150;
+      background:rgba(7,7,7,.96); border-top:1px solid #252525;
+      display:flex; justify-content:center;
+    }
+    .bottom-nav-inner { width:100%; max-width:720px; display:grid; grid-template-columns:repeat(3,1fr); }
+    .nav-item { background:transparent;color:#777;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:800;cursor:pointer; }
+    .nav-icon { font-size:20px; line-height:20px; }
+    .nav-item.active { color:#ffd400; }
+
+    /* compact floating cart */
+    .floating-cart {
+      left:auto; right:18px; bottom:86px; width:auto; max-width:none; margin:0;
+      min-width:58px; height:58px; padding:0 15px; border-radius:18px;
+      background:#ffd400;color:#111; box-shadow:0 8px 25px rgba(0,0,0,.35);
+    }
+    .floating-cart-left { gap:7px; }
+    .cart-icon { width:32px;height:32px;border-radius:10px;background:rgba(0,0,0,.09); }
+    .floating-cart-text { display:none; }
+    .floating-cart-total { color:#111;font-size:15px;font-weight:900; }
+    .floating-cart::after {
+      content:attr(data-count); position:absolute; top:-6px; right:-5px; min-width:20px;height:20px;padding:0 5px;
+      border-radius:999px;background:#ffd400;color:#111;border:2px solid #050505;font-size:11px;font-weight:900;
+      display:flex;align-items:center;justify-content:center;
+    }
+
+    @media(max-width:390px){
+      .hero{height:155px}.home-product-image-wrap{height:125px}.product-image{height:125px}.product-gallery{height:250px}
+    }
+
   </style>
 </head>
 
@@ -990,16 +1143,16 @@
 
     <div class="top-header">
       <div>
-        <div class="brand">Шаурма <span>Мастер</span></div>
-        <div style="color:#aaa;font-size:12px;font-weight:700;margin-top:3px;">Вкусно • быстро • прямо в Telegram</div>
+        <div class="brand">🍴 <span>Шаурма Мастер</span></div>
+        <div style="color:#aaa;font-size:12px;font-weight:700;margin-top:5px;">Вкусно • быстро • прямо в Telegram</div>
       </div>
       <div class="telegram-user" id="userAvatar">Q</div>
     </div>
 
     <div class="hero">
-      <div class="hero-small">ШАУРМА МАСТЕР</div>
-      <div class="hero-title">Настоящая<br>шаурма<br>рядом с тобой</div>
-      <div class="hero-text">Выбирай любимое блюдо и оформляй заказ за пару нажатий.</div>
+      <div>
+        <div class="hero-title">Настоящая<br>шаурма<br>с сочной начинкой</div>
+      </div>
     </div>
 
     <div class="home-search-wrap">
@@ -1267,6 +1420,18 @@
   </div>
 
 
+  <div id="profilePage" class="page hidden">
+    <div class="back-button" onclick="openHome()">← Меню</div>
+    <div class="page-title">Профиль</div>
+    <div class="page-subtitle">Ваш Telegram-профиль</div>
+    <div class="checkout-card" style="text-align:center;padding:30px 18px;">
+      <div id="profileAvatar" class="telegram-user" style="margin:0 auto 14px;width:64px;height:64px;font-size:24px;">Q</div>
+      <div id="profileName" style="font-size:20px;font-weight:900;">Гость</div>
+      <div id="profileUsername" style="margin-top:5px;color:#777;">Telegram</div>
+    </div>
+    <button class="main-button" type="button" onclick="openHistory()">📋 Мои заказы</button>
+  </div>
+
   <!-- =========================
        FLOATING CART
   ========================= -->
@@ -1297,6 +1462,20 @@
   </div>
 
 
+  <div class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="nav-item active" id="navHome" type="button" onclick="openHome()">
+        <span class="nav-icon">⌂</span><span>Главная</span>
+      </button>
+      <button class="nav-item" id="navOrders" type="button" onclick="openHistory()">
+        <span class="nav-icon">▣</span><span>Мои заказы</span>
+      </button>
+      <button class="nav-item" id="navProfile" type="button" onclick="openProfile()">
+        <span class="nav-icon">♙</span><span>Профиль</span>
+      </button>
+    </div>
+  </div>
+
   <script>
 
     const tg = window.Telegram.WebApp;
@@ -1316,6 +1495,7 @@
 
     function openHistory() {
       hideAllPages();
+      setNav("navOrders");
 
       document
         .getElementById("historyPage")
@@ -1486,6 +1666,32 @@
 
     }
 
+    function setNav(activeId) {
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+      const active = document.getElementById(activeId);
+      if (active) active.classList.add("active");
+    }
+
+    function openHome() {
+      hideAllPages();
+      document.getElementById("mainPage").classList.remove("hidden");
+      setNav("navHome");
+      window.scrollTo(0,0);
+    }
+
+    function openProfile() {
+      hideAllPages();
+      document.getElementById("profilePage").classList.remove("hidden");
+      setNav("navProfile");
+      if (telegramUser) {
+        const first = telegramUser.first_name || "Q";
+        document.getElementById("profileAvatar").textContent = first.charAt(0).toUpperCase();
+        document.getElementById("profileName").textContent = [telegramUser.first_name, telegramUser.last_name].filter(Boolean).join(" ") || "Пользователь";
+        document.getElementById("profileUsername").textContent = telegramUser.username ? "@" + telegramUser.username : "Telegram";
+      }
+      window.scrollTo(0,0);
+    }
+
 
 
 
@@ -1561,7 +1767,7 @@
 
       hideAllPages();
       document.getElementById("productPage").classList.remove("hidden");
-      document.getElementById("detailName").textContent = name;
+      document.getElementById("detailName").textContent = name === "MAX" ? "Шаурма MAX" : (name === "Стандарт" ? "Шаурма Стандарт" : name);
       document.getElementById("detailPrice").textContent = `${price} ₸`;
 
       const info = productDetails[name] || {
@@ -1572,6 +1778,7 @@
       document.getElementById("detailDescription").textContent = info.description;
       document.getElementById("detailIngredients").innerHTML = info.ingredients.map(item => `<li>${item}</li>`).join("");
       document.getElementById("detailQuantity").textContent = detailQuantity;
+      document.getElementById("detailAdd").textContent = `Добавить в корзину · ${price} ₸`;
       renderGallery();
       window.scrollTo(0, 0);
     }
@@ -1601,6 +1808,9 @@
     function changeDetailQuantity(change) {
       detailQuantity = Math.max(1, detailQuantity + change);
       document.getElementById("detailQuantity").textContent = detailQuantity;
+      if (detailProduct) {
+        document.getElementById("detailAdd").textContent = `Добавить в корзину · ${detailProduct.price * detailQuantity} ₸`;
+      }
     }
 
     function addDetailToCart() {
@@ -1625,6 +1835,7 @@
       }
       filtered.forEach(product => {
         const name = product.item[0];
+        const displayName = name === "MAX" ? "Шаурма MAX" : (name === "Стандарт" ? "Шаурма Стандарт" : name);
         const price = product.item[1];
         const image = getProductImage(product.category, name);
         const card = document.createElement("div");
@@ -1634,7 +1845,7 @@
             <img class="home-product-image" src="${image}" alt="${name}" loading="lazy">
           </div>
           <div class="home-product-body">
-            <div class="home-product-name">${name}</div>
+            <div class="home-product-name">${displayName}</div>
             <div class="home-product-bottom">
               <div class="home-product-price">${price} ₸</div>
               <button class="home-add-button" type="button" aria-label="Добавить ${name}">+</button>
@@ -1869,7 +2080,7 @@
               <div>
 
                 <div class="product-name">
-                  ${name}
+                  ${name === "MAX" ? "Шаурма MAX" : (name === "Стандарт" ? "Шаурма Стандарт" : name)}
                 </div>
 
                 <div class="product-price">
@@ -1987,6 +2198,7 @@
       if (cart.length === 0) {
 
         button.classList.add("hidden");
+        button.removeAttribute("data-count");
 
         return;
 
@@ -2006,6 +2218,8 @@
         .getElementById("floatingCartTotal")
         .textContent =
         `${total} ₸`;
+
+      button.setAttribute("data-count", totalQuantity);
 
     }
 
@@ -2544,24 +2758,7 @@
     ========================= */
 
     function goBack() {
-
-      hideAllPages();
-
-
-      document
-        .getElementById(
-          "mainPage"
-        )
-        .classList.remove(
-          "hidden"
-        );
-
-
-      window.scrollTo(
-        0,
-        0
-      );
-
+      openHome();
     }
 
 

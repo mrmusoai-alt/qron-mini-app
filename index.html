@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <title>QRON — Заказывай быстро</title>
+  <title>Шаурма Мастер — Заказывай быстро</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -698,7 +698,7 @@
     }
 
     /* =========================
-       QRON HOME REDESIGN
+       Шаурма Мастер HOME REDESIGN
     ========================= */
     .home-search-wrap { position: relative; margin: 0 0 16px; }
     .home-search { width:100%; height:52px; border:1px solid #e7e7e7; background:#fff; border-radius:16px; padding:0 16px 0 46px; font-size:15px; outline:none; color:#111; }
@@ -725,6 +725,258 @@
     .home-empty { grid-column:1/-1; background:#fff; border:1px solid #ececec; border-radius:19px; padding:30px 16px; text-align:center; color:#777; }
     @media (max-width:390px) { .home-product-image-wrap { height:125px; } .home-product-body { padding:10px; } .home-product-name { font-size:14px; } }
 
+
+
+    /* =========================
+       SHAURMA MASTER THEME
+    ========================= */
+
+    :root {
+      --bg: #080808;
+      --card: #111111;
+      --text: #ffffff;
+      --muted: #9b9b9b;
+      --border: #2b2b2b;
+      --accent: #ffd400;
+      --green: #24c76b;
+    }
+
+    body {
+      background: #080808;
+      color: #fff;
+    }
+
+    .brand {
+      color: #ffd400;
+      line-height: .95;
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 29px;
+      letter-spacing: -1px;
+    }
+
+    .brand span {
+      display: block;
+      padding-left: 20px;
+    }
+
+    .brand-dot { display:none; }
+
+    .telegram-user {
+      background: #ffd400;
+      color: #111;
+    }
+
+    .hero {
+      background: linear-gradient(135deg,#161616,#080808);
+      border: 1px solid #292929;
+      box-shadow: inset 0 0 0 1px rgba(255,212,0,.04);
+    }
+
+    .hero-small { color:#ffd400; }
+    .hero-text { color:#aaa; }
+
+    .home-search {
+      background:#151515;
+      color:#fff;
+      border-color:#303030;
+    }
+
+    .home-search::placeholder { color:#777; }
+    .home-search:focus { border-color:#ffd400; }
+
+    .home-chip {
+      background:#121212;
+      color:#aaa;
+      border-color:#2c2c2c;
+    }
+
+    .home-chip.active {
+      background:#ffd400;
+      color:#111;
+      border-color:#ffd400;
+    }
+
+    .home-section-title { color:#fff; }
+    .home-section-link { color:#ffd400; }
+
+    .home-product,
+    .category,
+    .cart-card,
+    .checkout-card,
+    .success-card,
+    .history-card,
+    .history-empty {
+      background:#111;
+      border-color:#292929;
+      color:#fff;
+    }
+
+    .home-product-image-wrap { background:#181818; }
+    .home-product-price, .product-price, .cart-price, .detail-price { color:#ffd400; }
+    .home-add-button, .add-button { background:#ffd400; color:#111; }
+
+    .home-history-button, .back-button {
+      background:#111;
+      color:#fff;
+      border-color:#292929;
+    }
+
+    .main-button { background:#ffd400; color:#111; }
+
+    .floating-cart {
+      background:#ffd400;
+      color:#111;
+    }
+
+    .floating-cart-total { color:#111; }
+    .cart-icon { background:rgba(0,0,0,.12); }
+
+    .quantity { background:#1b1b1b; }
+    .quantity button { background:#292929; color:#fff; }
+    .field input, .field textarea { background:#181818; color:#fff; border-color:#303030; }
+    .field input::placeholder, .field textarea::placeholder { color:#777; }
+    .field input:focus, .field textarea:focus { background:#111; border-color:#ffd400; }
+
+    .history-status { background:#103b24; color:#4be98a; }
+
+    /* PRODUCT DETAIL */
+    .product-detail-card {
+      background:#111;
+      border:1px solid #292929;
+      border-radius:24px;
+      overflow:hidden;
+    }
+
+    .product-gallery {
+      height:300px;
+      position:relative;
+      background:#181818;
+      overflow:hidden;
+    }
+
+    .detail-image {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .gallery-arrow {
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      background:rgba(0,0,0,.55);
+      color:#fff;
+      font-size:30px;
+      line-height:1;
+      cursor:pointer;
+    }
+
+    .gallery-prev { left:12px; }
+    .gallery-next { right:12px; }
+
+    .gallery-dots {
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:13px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+    }
+
+    .gallery-dot {
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:#777;
+    }
+
+    .gallery-dot.active {
+      width:20px;
+      border-radius:999px;
+      background:#ffd400;
+    }
+
+    .detail-body { padding:20px; }
+    .detail-name { font-size:28px; font-weight:900; line-height:1.05; }
+    .detail-price { margin-top:7px; font-size:23px; font-weight:900; }
+    .detail-description { margin-top:10px; color:#aaa; line-height:1.45; font-size:14px; }
+    .detail-heading { margin-top:20px; font-size:17px; font-weight:900; }
+
+    .detail-ingredients {
+      margin:10px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px 12px;
+    }
+
+    .detail-ingredients li {
+      color:#ddd;
+      font-size:14px;
+    }
+
+    .detail-ingredients li::before {
+      content:"•";
+      color:#ffd400;
+      margin-right:7px;
+      font-weight:900;
+    }
+
+    .detail-actions {
+      display:flex;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    .detail-quantity {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:5px;
+      border-radius:15px;
+      background:#1b1b1b;
+    }
+
+    .detail-quantity button {
+      width:36px;
+      height:36px;
+      border-radius:11px;
+      background:#292929;
+      color:#fff;
+      font-size:21px;
+    }
+
+    .detail-quantity span {
+      min-width:20px;
+      text-align:center;
+      font-weight:900;
+    }
+
+    .detail-add {
+      flex:1;
+      border-radius:15px;
+      background:#ffd400;
+      color:#111;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+    }
+
+    .category .category-icon { filter:none; }
+
+    @media (max-width:390px) {
+      .product-gallery { height:260px; }
+      .detail-name { font-size:24px; }
+      .detail-body { padding:17px; }
+    }
+
   </style>
 </head>
 
@@ -738,16 +990,16 @@
 
     <div class="top-header">
       <div>
-        <div class="brand">QRON<span class="brand-dot"></span></div>
-        <div style="color:#888;font-size:12px;font-weight:700;margin-top:2px;">Быстрая еда в Telegram</div>
+        <div class="brand">Шаурма <span>Мастер</span></div>
+        <div style="color:#aaa;font-size:12px;font-weight:700;margin-top:3px;">Вкусно • быстро • прямо в Telegram</div>
       </div>
       <div class="telegram-user" id="userAvatar">Q</div>
     </div>
 
     <div class="hero">
-      <div class="hero-small">QRON FOOD</div>
-      <div class="hero-title">Вкусно.<br>Быстро.<br>Без лишнего.</div>
-      <div class="hero-text">Выбирай любимое и заказывай прямо в Telegram.</div>
+      <div class="hero-small">ШАУРМА МАСТЕР</div>
+      <div class="hero-title">Настоящая<br>шаурма<br>рядом с тобой</div>
+      <div class="hero-text">Выбирай любимое блюдо и оформляй заказ за пару нажатий.</div>
     </div>
 
     <div class="home-search-wrap">
@@ -788,7 +1040,7 @@
     <div class="page-title" id="categoryTitle"></div>
 
     <div class="page-subtitle">
-      Выбери блюдо
+      Шаурма Мастер • выбери своё блюдо
     </div>
 
     <div class="products" id="products"></div>
@@ -796,6 +1048,47 @@
   </div>
 
 
+
+  <!-- =========================
+       PRODUCT DETAIL
+  ========================= -->
+
+  <div id="productPage" class="page hidden">
+
+    <div class="back-button" onclick="closeProduct()">
+      ← Назад
+    </div>
+
+    <div class="product-detail-card">
+      <div class="product-gallery">
+        <img id="detailImage" class="detail-image" src="" alt="">
+        <button id="detailPrev" class="gallery-arrow gallery-prev" type="button">‹</button>
+        <button id="detailNext" class="gallery-arrow gallery-next" type="button">›</button>
+        <div id="galleryDots" class="gallery-dots"></div>
+      </div>
+
+      <div class="detail-body">
+        <div class="detail-name" id="detailName"></div>
+        <div class="detail-price" id="detailPrice"></div>
+        <div class="detail-description" id="detailDescription"></div>
+
+        <div class="detail-heading">Состав</div>
+        <ul id="detailIngredients" class="detail-ingredients"></ul>
+
+        <div id="detailOptions" class="detail-options hidden"></div>
+
+        <div class="detail-actions">
+          <div class="detail-quantity">
+            <button id="detailMinus" type="button">−</button>
+            <span id="detailQuantity">1</span>
+            <button id="detailPlus" type="button">+</button>
+          </div>
+          <button id="detailAdd" class="detail-add" type="button">Добавить в корзину</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <!-- =========================
        ORDER HISTORY
@@ -1047,7 +1340,7 @@
           <div class="history-empty">
             <div class="history-empty-icon">📱</div>
             <div class="empty-cart-title">
-              Откройте QRON через Telegram
+              Откройте Шаурма Мастер через Telegram
             </div>
           </div>
         `;
@@ -1213,12 +1506,107 @@
       { category: "extras", item: ["Сыр", 30] }
     ];
 
+    const productDetails = {
+      "MAX": { description: "Большая сочная шаурма с курицей, свежими овощами и фирменным соусом.", ingredients: ["Курица", "Огурцы", "Помидоры", "Капуста", "Лук", "Фирменный соус", "Лаваш"] },
+      "Стандарт": { description: "Классическая шаурма с сочной начинкой и фирменным соусом.", ingredients: ["Курица", "Огурцы", "Помидоры", "Капуста", "Лук", "Фирменный соус", "Лаваш"] },
+      "Мини": { description: "Небольшая порция шаурмы — удобно взять с собой.", ingredients: ["Курица", "Овощи", "Фирменный соус", "Лаваш"] },
+      "Гранатовая": { description: "Шаурма с ярким гранатовым вкусом и сочной начинкой.", ingredients: ["Курица", "Овощи", "Гранатовый соус", "Фирменный соус", "Лаваш"] },
+      "С креветкой": { description: "Нежная шаурма с креветкой и свежими овощами.", ingredients: ["Креветка", "Овощи", "Соус", "Лаваш"] },
+      "Мексикано": { description: "Пикантная шаурма с мексиканским характером.", ingredients: ["Курица", "Овощи", "Острый соус", "Фирменный соус", "Лаваш"] },
+      "На тарелке": { description: "Шаурма в тарелке с начинкой и овощами.", ingredients: ["Курица", "Овощи", "Соус"] },
+      "В сырном лаваше MAX": { description: "Большая шаурма в сырном лаваше.", ingredients: ["Курица", "Овощи", "Сырный лаваш", "Соус"] },
+      "В сырном лаваше": { description: "Шаурма в ароматном сырном лаваше.", ingredients: ["Курица", "Овощи", "Сырный лаваш", "Соус"] },
+      "Фирменная": { description: "Фирменная шаурма Шаурма Мастер.", ingredients: ["Курица", "Овощи", "Фирменный соус", "Лаваш"] },
+      "Ролл куриный": { description: "Сочный куриный ролл с овощами и соусом.", ingredients: ["Курица", "Овощи", "Соус", "Лаваш"] },
+      "Хот-дог": { description: "Горячий хот-дог с начинкой и соусом.", ingredients: ["Сосиска", "Булочка", "Овощи", "Соус"] },
+      "Донар": { description: "Сытный донар с мясом, овощами и соусом.", ingredients: ["Мясо", "Овощи", "Соус", "Лаваш"] },
+      "Гирос": { description: "Сочный гирос с мясом и свежими овощами.", ingredients: ["Мясо", "Овощи", "Соус", "Лаваш"] },
+      "Фри": { description: "Хрустящая картошка фри.", ingredients: ["Картофель", "Соль"] }
+    };
+
     function getProductImage(category, name) {
       let image = menu[category].image;
       if (name.includes("Хот-дог")) image = images.hotdog;
       if (name.includes("Фри") || name.includes("Наггет")) image = images.fries;
       if (name.includes("На тарелке") || name.includes("Плов")) image = images.plate;
       return image;
+    }
+
+    function getProductGallery(category, name) {
+      const primary = getProductImage(category, name);
+      const second = name.includes("Хот-дог") ? images.food : (name.includes("Фри") ? images.plate : images.food);
+      const third = name.includes("Хот-дог") ? images.plate : images.shawarma;
+      return [...new Set([primary, second, third])];
+    }
+
+    function findProduct(name) {
+      for (const category of Object.keys(menu)) {
+        const found = menu[category].items.find(item => item[0] === name);
+        if (found) return { category, name: found[0], price: found[1] };
+      }
+      return null;
+    }
+
+    let detailGallery = [];
+    let detailGalleryIndex = 0;
+    let detailProduct = null;
+    let detailQuantity = 1;
+
+    function openProduct(category, name, price) {
+      const product = { category, name, price };
+      detailProduct = product;
+      detailGallery = getProductGallery(category, name);
+      detailGalleryIndex = 0;
+      detailQuantity = 1;
+
+      hideAllPages();
+      document.getElementById("productPage").classList.remove("hidden");
+      document.getElementById("detailName").textContent = name;
+      document.getElementById("detailPrice").textContent = `${price} ₸`;
+
+      const info = productDetails[name] || {
+        description: "Вкусное блюдо от Шаурма Мастер.",
+        ingredients: ["Основной ингредиент", "Свежие овощи", "Фирменный соус"]
+      };
+
+      document.getElementById("detailDescription").textContent = info.description;
+      document.getElementById("detailIngredients").innerHTML = info.ingredients.map(item => `<li>${item}</li>`).join("");
+      document.getElementById("detailQuantity").textContent = detailQuantity;
+      renderGallery();
+      window.scrollTo(0, 0);
+    }
+
+    function renderGallery() {
+      const image = document.getElementById("detailImage");
+      image.src = detailGallery[detailGalleryIndex];
+      image.alt = detailProduct ? detailProduct.name : "Блюдо";
+
+      document.getElementById("galleryDots").innerHTML = detailGallery.map((_, i) => `<span class="gallery-dot ${i === detailGalleryIndex ? "active" : ""}"></span>`).join("");
+    }
+
+    function changeGallery(direction) {
+      if (!detailGallery.length) return;
+      detailGalleryIndex = (detailGalleryIndex + direction + detailGallery.length) % detailGallery.length;
+      renderGallery();
+    }
+
+    function closeProduct() {
+      if (detailProduct && detailProduct.category) {
+        openCategory(detailProduct.category);
+      } else {
+        goBack();
+      }
+    }
+
+    function changeDetailQuantity(change) {
+      detailQuantity = Math.max(1, detailQuantity + change);
+      document.getElementById("detailQuantity").textContent = detailQuantity;
+    }
+
+    function addDetailToCart() {
+      if (!detailProduct) return;
+      for (let i = 0; i < detailQuantity; i++) addToCart(detailProduct.name, detailProduct.price);
+      closeProduct();
     }
 
     function renderHomeProducts(category = "all", search = "") {
@@ -1253,7 +1641,11 @@
             </div>
           </div>
         `;
-        card.querySelector(".home-add-button").addEventListener("click", () => addToCart(name, price));
+        card.addEventListener("click", () => openProduct(product.category, name, price));
+        card.querySelector(".home-add-button").addEventListener("click", event => {
+          event.stopPropagation();
+          addToCart(name, price);
+        });
         container.appendChild(card);
       });
     }
@@ -1277,6 +1669,12 @@
           renderHomeProducts(category, search?.value || "");
         });
       });
+
+      document.getElementById("detailPrev").addEventListener("click", () => changeGallery(-1));
+      document.getElementById("detailNext").addEventListener("click", () => changeGallery(1));
+      document.getElementById("detailMinus").addEventListener("click", () => changeDetailQuantity(-1));
+      document.getElementById("detailPlus").addEventListener("click", () => changeDetailQuantity(1));
+      document.getElementById("detailAdd").addEventListener("click", addDetailToCart);
     }
 
 
@@ -1493,13 +1891,17 @@
         `;
 
 
+        product.addEventListener("click", () => openProduct(category, name, price));
+
         product
           .querySelector(".add-button")
           .addEventListener(
             "click",
-            () => addToCart(name, price)
+            (event) => {
+              event.stopPropagation();
+              addToCart(name, price);
+            }
           );
-
 
         products.appendChild(product);
 
@@ -1968,7 +2370,7 @@
       if (!user || !user.id) {
 
         alert(
-          "Откройте QRON через Telegram-бота"
+          "Откройте Шаурма Мастер через Telegram-бота"
         );
 
         return;

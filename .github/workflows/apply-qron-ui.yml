@@ -21,11 +21,8 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          # Rename the all-items section title to Menu.
           s = s.replace('category === "all" ? "Популярное"', 'category === "all" ? "Меню"')
           s = s.replace("category === 'all' ? 'Популярное'", "category === 'all' ? 'Меню'")
-
-          # Remove the old floating cart so only the header cart remains.
           s = re.sub(r'(?s)\\.floating-cart\\s*\\{.*?\\}', '', s)
 
           css = r'''
@@ -60,19 +57,15 @@ jobs:
           .search,.search-bar{background:#171719!important;border:1px solid #303030!important;color:#fff!important;border-radius:18px!important}
           input,textarea{background:#111214!important;color:#fff!important;border-color:#303030!important}
           '''
-
           if '/* ===== QRON REFERENCE UI ===== */' not in s:
               s = s.replace('</style>', css + '\n</style>', 1)
 
-          # Send Telegram WebApp initData to the backend. The backend verifies its HMAC.
-          old_history_user = '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;'''
-          s = s.replace(old_history_user, '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;\n\n      const initData = tg.initData;''', 1)
-          s = s.replace('`/api/history?telegram_id=${encodeURIComponent(user.id)}`', '`/api/history`', 1)
-          s = s.replace('''          method: "GET"\n          }''', '''          method: "GET",\n            headers: {\n              "X-Telegram-Init-Data": initData\n            }\n          }''', 1)
+          # History: keep the UI user check, but authenticate the API request with signed Telegram initData.
+          s = s.replace('''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;''', '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;\n\n      const initData = tg.initData;''', 1)
+          s = s.replace('''          `/api/history?telegram_id=${encodeURIComponent(user.id)}`\n        );''', '''          `/api/history`,\n          {\n            headers: {\n              "X-Telegram-Init-Data": initData\n            }\n          }\n        );''', 1)
 
-          # Order endpoint must authenticate from initData and never trust client identity/price.
-          old_order_user = '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;'''
-          s = s.replace(old_order_user, '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;\n\n      const initData = tg.initData;''', 1)
+          # Order: send signed initData; identity and prices are derived server-side.
+          s = s.replace('''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;''', '''      const user =\n        tg.initDataUnsafe &&\n        tg.initDataUnsafe.user;\n\n      const initData = tg.initData;''', 1)
           s = s.replace('''              headers: {\n                "Content-Type":\n                  "application/json"\n              },''', '''              headers: {\n                "Content-Type":\n                  "application/json",\n                "X-Telegram-Init-Data":\n                  initData\n              },''', 1)
           s = s.replace('''                  total,\n\n                  user: {\n\n                    id:\n                      user.id,\n\n                    first_name:\n                      user.first_name ||\n                      "",\n\n                    username:\n                      user.username ||\n                      ""\n\n                  },\n\n                  customer:''', '''                  customer:''', 1)
 

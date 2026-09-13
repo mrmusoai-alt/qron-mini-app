@@ -1577,6 +1577,10 @@ input,textarea{background:#111214!important;color:#fff!important;border-color:#3
         tg.initDataUnsafe &&
         tg.initDataUnsafe.user;
 
+      const initData = tg.initData;
+
+      const initData = tg.initData;
+
       if (!user || !user.id) {
         container.innerHTML = `
           <div class="history-empty">
@@ -1597,7 +1601,7 @@ input,textarea{background:#111214!important;color:#fff!important;border-color:#3
 
       try {
         const response = await fetch(
-          `/api/history?telegram_id=${encodeURIComponent(user.id)}`
+          `/api/history`
         );
 
         const result = await response.json();
@@ -2702,30 +2706,15 @@ input,textarea{background:#111214!important;color:#fff!important;border-color:#3
 
               headers: {
                 "Content-Type":
-                  "application/json"
+                  "application/json",
+                "X-Telegram-Init-Data":
+                  initData
               },
 
               body:
                 JSON.stringify({
 
                   order,
-
-                  total,
-
-                  user: {
-
-                    id:
-                      user.id,
-
-                    first_name:
-                      user.first_name ||
-                      "",
-
-                    username:
-                      user.username ||
-                      ""
-
-                  },
 
                   customer: {
 

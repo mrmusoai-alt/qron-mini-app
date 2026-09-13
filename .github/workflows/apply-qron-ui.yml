@@ -1,0 +1,10 @@
+name: Apply QRON UI update
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "UI auto-modification workflow disabled; changes must be made deliberately."

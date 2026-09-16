@@ -12,9 +12,7 @@ export default async function handler(req, res) {
 
     if (!BOT_TOKEN) return res.status(500).json({ error: "BOT_TOKEN не найден" });
     if (!ADMIN_CHAT_ID) return res.status(500).json({ error: "ADMIN_CHAT_ID не найден" });
-    if (!SUPABASE_URL || !SUPABASE_KEY) {
-      return res.status(500).json({ error: "Supabase переменные не найдены" });
-    }
+    if (!SUPABASE_URL || !SUPABASE_KEY) return res.status(500).json({ error: "Supabase переменные не найдены" });
 
     let user;
     try {
@@ -24,7 +22,6 @@ export default async function handler(req, res) {
     }
 
     const { order, customer } = req.body || {};
-
     let validated;
     try {
       validated = validateOrderItems(order);
@@ -38,10 +35,7 @@ export default async function handler(req, res) {
       phone: typeof customer?.phone === "string" ? customer.phone.trim().slice(0, 50) : "",
       comment: typeof customer?.comment === "string" ? customer.comment.trim().slice(0, 500) : ""
     };
-
-    if (!safeCustomer.name || !safeCustomer.phone) {
-      return res.status(400).json({ error: "Введите имя и номер телефона" });
-    }
+    if (!safeCustomer.name || !safeCustomer.phone) return res.status(400).json({ error: "Введите имя и номер телефона" });
 
     const dbResponse = await fetch(`${SUPABASE_URL}/rest/v1/orders`, {
       method: "POST",
@@ -49,7 +43,7 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         "apikey": SUPABASE_KEY,
         "Authorization": `Bearer ${SUPABASE_KEY}`,
-        "Prefer": "return=minimal"
+        "Prefer": "return=representation"
       },
       body: JSON.stringify({
         telegram_id: user.id,
@@ -67,7 +61,11 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Не удалось сохранить заказ" });
     }
 
-    let text = "🛒 НОВЫЙ ЗАКАЗ QRON\n\n";
+    const savedOrders = await dbResponse.json();
+    const savedOrder = Array.isArray(savedOrders) ? savedOrders[0] : savedOrders;
+    if (!savedOrder?.id) return res.status(500).json({ error: "Заказ сохранён без номера" });
+
+    let text = `🛒 НОВЫЙ ЗАКАЗ QRON #${savedOrder.id}\n\n`;
     items.forEach((item) => {
       text += `🍴 ${item.name} × ${item.quantity} — ${item.price * item.quantity} ₸\n`;
     });
@@ -84,13 +82,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text })
     });
     const telegramData = await telegramResponse.json();
-
     if (!telegramData.ok) {
       console.error("Telegram error:", telegramData.description);
-      return res.status(500).json({ error: "Telegram не принял заказ" });
+      return res.status(500).json({ error: "Заказ сохранён, но Telegram не принял уведомление" });
     }
 
-    return res.status(200).json({ success: true, total });
+    return res.status(200).json({ success: true, orderId: savedOrder.id, total, createdAt: savedOrder.created_at || new Date().toISOString() });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Ошибка сервера" });
